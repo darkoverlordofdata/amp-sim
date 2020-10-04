@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stax-Of-Amps</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <link href='css/fonts.css' rel='stylesheet' type='text/css'>
+	<link href="css/normalize.css" rel="stylesheet" type="text/css">
+    <link href="css/app.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- <header>
+            <h1>Stax-o-Amps</h1>
+        </header> -->
+        <button id="start">On</button>
+        <canvas class="visualizer" width="800" height="50"></canvas> 
+
+        <form class="controls">
+            <div>
+            <label for="visual">Visualization</label>
+            <select id="visual" name="visual">
+                <option value="sinewave">Wave</option>
+                <option value="frequencybars" selected>Bars</option>
+                <option value="off">Off</option>
+            </select>
+            </div>
+            <div>
+            <a class="mute">Mute</a>
+            </div>
+            <div>
+            <label for="voice">Effects</label>
+            <select id="voice" name="voice">
+                <option value="distortion">Distortion</option>
+                <option value="convolver">Reverb</option>
+                <option value="biquad">Bass Boost</option>
+                <option value="off" selected>Off</option>
+            </select>
+            </div>
+        </form>
+    </div>
+    <script src="src/wad.js"></script>
+    <!-- <script src="src/index.js"></script> -->
+    <script src="src/app.js"></script>
+</body>
+</html>
