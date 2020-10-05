@@ -1,11 +1,10 @@
 /**
+ * stack.js
  * 
+ * a stack of amps
  * 
  * 
  */
-// let heading = document.querySelector('h1')
-// heading.textContent = 'CLICK ANYWHERE TO START'
-// document.body.addEventListener('click', init)
 
 Wad.logs.verbosity = 1
 var voice
@@ -20,7 +19,7 @@ var wahWahBypass = 1
 var filterBypass = 1
 var cabinetBypass = 0
 var compressorBypass = 0
-var phaserBypass = 0
+var phaserBypass = 1
 var chorusBypass = 0
 var gainBypass = 0
 
