@@ -7,135 +7,184 @@
  */
 
 Wad.logs.verbosity = 1
-var voice
-var tuner
+var guitar
+var amplifier
 
-// pedal effect flags
-var overdriveBypass = 1
-var delayBypass = 1
-var tremeloBypass = 1
-var moogBypass = 1
-var wahWahBypass = 1
-var filterBypass = 1
-var cabinetBypass = 0
-var compressorBypass = 0
-var phaserBypass = 1
-var chorusBypass = 0
-var gainBypass = 0
+// effect default flag values
+
+var overdrive_output_gain = 0.5		//0 to 1+
+var overdrive_drive = 0.7			//0 to 1
+var overdrive_curve_amount = 1		//0 to 1
+var overdrive_algorithm_index = 0	//0 to 5, selects one of our drive algorithms
+var overdrive_bypass = 1
+
+var delay_feedback = 0.45    		//0 to 1+
+var delay_delay_time = 100    		//1 to 10000 milliseconds
+var delay_wet_level = 0.5     		//0 to 1+
+var delay_dry_level = 1       		//0 to 1+
+var delay_cutoff = 20000      		//cutoff frequency of the built in lowpass-filter. 20 to 22050
+var delay_bypass = 1
+
+var tremelo_intensity = 0.3    		//0 to 1
+var tremelo_rate = 5           		//0.001 to 8
+var tremelo_stereo_phase = 0    		//0 to 180
+var tremelo_bypass = 1				
+
+var moog_filter_cutoff = 0.065    	//0 to 1
+var moog_filter_resonance = 3.5   	//0 to 4
+var moog_filter_buffer_size = 4096 	//256 to 16384				
+var moog_filter_bypass = 1				
+
+var wah_wah_automode = true       	//true/false
+var wah_wah_base_frequency = 0.5     //0 to 1
+var wah_wah_excursion_octaves = 2    //1 to 6
+var wah_wah_sweep = 0.2             //0 to 1
+var wah_wah_resonance = 10          //1 to 100
+var wah_wah_sensitivity = 0.5       //-1 to 1
+var wah_wah_bypass = 1				
+
+var filter_frequency = 800         	//20 to 22050
+var filter_Q = 1                   	//0.001 to 100
+var filter_gain = 0                	//-40 to 40 (in decibels)
+var filter_filter_type = "lowpass" 	//lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass
+var filter_bypass = 1
+
+var cabinet_makeup_gain = 1       	//0 to 20
+var cabinet_impulse_path = "impulses/impulse_guitar.wav"    
+var cabinet_bypass = 0				
+
+var compressor_threshold = -20    	//-100 to 0
+var compressor_makeup_gain = 1     	//0 and up (in decibels)
+var compressor_attack = 1         	//0 to 1000
+var compressor_release = 250      	//0 to 3000
+var compressor_ratio = 4          	//1 to 20
+var compressor_knee = 5           	//0 to 40
+var compressor_automakeup = false 	//true/false
+var compressor_bypass = 0
+
+var phaser_rate = 0.1              	//0.01 to 8 is a decent range, but higher values are possible
+var phaser_depth = 0.6              //0 to 1
+var phaser_feedback = 0.7           //0 to 1+
+var phaser_stereo_phase = 40        //0 to 180
+var phaser_base_modulation_frequency = 700  //500 to 1500
+var phaser_bypass = 0
+
+var chorus_rate = 1.5         		//0.01 to 8+
+var chorus_feedback = 0.4     		//0 to 1+
+var chorus_depth = 0.7        		//0 to 1
+var chorus_delay = 0.0045     		//0 to 1
+var chorus_bypass = 0
+
+var gain_gain = 10
+var gain_bypass = 0
 
 document.getElementById('start').addEventListener('click', () => {
-	voiceInit()
+	guitarInit()
 	console.log('Play mic')
-	voice.play()
+	guitar.play()
 	// console.log('Stop mic')
-	// voice.stop()
+	// guitar.stop()
 
 })
 
 
-function voiceInit() 
+function guitarInit() 
 {
 	// set up canvas context for visualizer
-	voice = new Wad({
+	guitar = new Wad({
 		source  : 'mic',
 		tuna   : {
 			Overdrive : {
-				outputGain: 0.5,         //0 to 1+
-				drive: 0.7,              //0 to 1
-				curveAmount: 1,          //0 to 1
-				algorithmIndex: 0,       //0 to 5, selects one of our drive algorithms
-				bypass: overdriveBypass
+				outputGain: 	overdrive_output_gain, 
+				drive: 			overdrive_drive,
+				curveAmount: 	overdrive_curve_amount,
+				algorithmIndex: overdrive_algorithm_index,       
+				bypass: 		overdrive_bypass
 			},
 			Delay: {
-				feedback: 0.45,    //0 to 1+
-				delayTime: 100,    //1 to 10000 milliseconds
-				wetLevel: 0.5,     //0 to 1+
-				dryLevel: 1,       //0 to 1+
-				cutoff: 20000,      //cutoff frequency of the built in lowpass-filter. 20 to 22050
-				bypass: delayBypass
+				feedback: 		delay_feedback,
+				delayTime: 		delay_delay_time,
+				wetLevel: 		delay_wet_level,
+				dryLevel: 		delay_dry_level,
+				cutoff: 		delay_cutoff,
+				bypass: 		delay_bypass
 			},
 			Tremolo: {
-				intensity: 0.3,    //0 to 1
-				rate: 5,           //0.001 to 8
-				stereoPhase: 0,    //0 to 180
-				bypass: tremeloBypass				
+				intensity: 		tremelo_intensity,
+				rate: 			tremelo_rate,
+				stereoPhase: 	tremelo_stereo_phase,
+				bypass: 		tremelo_bypass				
 			},
 			MoogFilter: {
-				cutoff: 0.065,    //0 to 1
-				resonance: 3.5,   //0 to 4
-				bufferSize: 4096, //256 to 16384				
-				bypass: moogBypass				
+				cutoff: 		moog_filter_cutoff,
+				resonance: 		moog_filter_resonance,
+				bufferSize: 	moog_filter_buffer_size,
+				bypass: 		moog_filter_bypass				
 			},
 			WahWah: {
-				automode: true,                //true/false
-				baseFrequency: 0.5,            //0 to 1
-				excursionOctaves: 2,           //1 to 6
-				sweep: 0.2,                    //0 to 1
-				resonance: 10,                 //1 to 100
-				sensitivity: 0.5,              //-1 to 1
-				bypass: wahWahBypass				
+				automode: 		wah_wah_automode,
+				baseFrequency: 	wah_wah_base_frequency, 
+				excursionOctaves: wah_wah_excursion_octaves,
+				sweep: 			wah_wah_sweep,
+				resonance: 		wah_wah_resonance,
+				sensitivity: 	wah_wah_sensitivity,
+				bypass: 		wah_wah_bypass				
 			},
 			Filter: {
-				frequency: 800,         //20 to 22050
-				Q: 1,                   //0.001 to 100
-				gain: 0,                //-40 to 40 (in decibels)
-				filterType: "lowpass",  //lowpass, highpass, bandpass, lowshelf, highshelf, peaking, notch, allpass
-				bypass: filterBypass
+				frequency: 		filter_frequency,
+				Q: 				filter_Q,
+				gain: 			filter_gain,
+				filterType: 	filter_filter_type,
+				bypass: 		filter_bypass
 			},
-
-
 			Cabinet: {
-				makeupGain: 1,                                 //0 to 20
-				impulsePath: "impulses/impulse_guitar.wav",    //path to your speaker impulse
-				bypass: cabinetBypass				
+				makeupGain: 	cabinet_makeup_gain,
+				impulsePath: 	cabinet_impulse_path,
+				bypass: 		cabinet_bypass				
 			},
 			Compressor: {
-				threshold: -20,    //-100 to 0
-				makeupGain: 1,     //0 and up (in decibels)
-				attack: 1,         //0 to 1000
-				release: 250,      //0 to 3000
-				ratio: 4,          //1 to 20
-				knee: 5,           //0 to 40
-				automakeup: false, //true/false
-				bypass: compressorBypass
+				threshold: 		compressor_threshold,
+				makeupGain: 	compressor_makeup_gain,
+				attack: 		compressor_attack,
+				release: 		compressor_release,
+				ratio: 			compressor_ratio,
+				knee: 			compressor_knee,
+				automakeup: 	compressor_automakeup,
+				bypass: 		compressor_bypass
 			},
 			Phaser: {
-				rate: 0.1,                     //0.01 to 8 is a decent range, but higher values are possible
-				depth: 0.6,                    //0 to 1
-				feedback: 0.7,                 //0 to 1+
-				stereoPhase: 40,               //0 to 180
-				baseModulationFrequency: 700,  //500 to 1500
-				bypass: phaserBypass
+				rate: 			phaser_rate,
+				depth: 			phaser_depth,
+				feedback: 		phaser_feedback,
+				stereoPhase: 	phaser_stereo_phase,
+				baseModulationFrequency: phaser_base_modulation_frequency,
+				bypass: 		phaser_bypass
 			},
 			Chorus : {
-				rate: 1.5,         //0.01 to 8+
-				feedback: 0.4,     //0 to 1+
-				depth: 0.7,        //0 to 1
-				delay: 0.0045,     //0 to 1
-				bypass: chorusBypass          //the value 1 starts the effect as bypassed, 0 or 1
+				rate: 			chorus_rate,
+				feedback: 		chorus_feedback,
+				depth: 			chorus_depth,
+				delay: 			chorus_delay,
+				bypass: 		chorus_bypass
 			},
 			Gain: {
-				gain: 10,
-				bypass: gainBypass          //the value 1 starts the effect as bypassed, 0 or 1
+				gain: 			gain_gain,
+				bypass: 		gain_bypass 
 			},			
 		},
-	// reverb  : {
-		//     wet : .4
-		// },
-		// filter: [
-		// 	{type : 'lowpass', frequency : 600, q : 1, env : {frequency : 800, attack : 0.5}},
-		// 	{type : 'highpass', frequency : 1000, q : 5}
-		// ],		
-		// filter  : {
-		//     type      : 'highpass',
-		//     frequency : 700
-		// },
-		// panning : -.2
 	})
 
-	tuner = new Wad.Poly()
-	// tuner.setVolume(0) // mute the tuner to avoid feedback
-	tuner.add(voice)
+	amplifier = new Wad.Poly({
+		compressor : {
+			attack    : .003, // The amount of time, in seconds, to reduce the gain by 10dB. This parameter ranges from 0 to 1.
+			knee      : 30,   // A decibel value representing the range above the threshold where the curve smoothly transitions to the "ratio" portion. This parameter ranges from 0 to 40.
+			ratio     : 12,   // The amount of dB change in input for a 1 dB change in output. This parameter ranges from 1 to 20.
+			release   : .25,  // The amount of time (in seconds) to increase the gain by 10dB. This parameter ranges from 0 to 1.
+			threshold : -24	  // The decibel value above which the compression will start taking effect. This parameter ranges from -100 to 0.
+		}		
+	})
+	amplifier.setVolume(0.5) 
+	amplifier.add(guitar)
 
 //   heading.textContent = 'Stacks of Amps'
 
@@ -143,7 +192,7 @@ function voiceInit()
 
 // use Wad for audioContext
 var audioCtx = Wad.audioContext
-var voiceSelect = document.getElementById("voice")
+var guitarSelect = document.getElementById("guitar")
 var source
 var stream
 
@@ -268,20 +317,20 @@ analyser.connect(audioCtx.destination)
 visualize()
 
 
-// event listeners to change visualize and voice settings
+// event listeners to change visualize and guitar settings
 
 visualSelect.onchange = function() {
   window.cancelAnimationFrame(drawVisual)
   visualize()
 }
 
-voiceSelect.onchange = function() {
-  voiceChange()
+guitarSelect.onchange = function() {
+  guitarChange()
 }
 
-mute.onclick = voiceMute
+mute.onclick = guitarMute
 
-function voiceMute() {
+function guitarMute() {
   if(mute.id === "") {
     // gainNode.gain.value = 0
     mute.id = "activated"
