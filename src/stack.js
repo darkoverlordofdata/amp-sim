@@ -80,17 +80,23 @@ var gain_bypass = 0
 
 document.getElementById('start').addEventListener('click', () => {
 	guitarInit()
-	console.log('Play mic')
 	guitar.play()
-	// console.log('Stop mic')
-	// guitar.stop()
 
+	/**
+	 * ?? to change volume, filter, panning, delay, rate ??
+	 * 
+	 * guitar.stop()
+	 * guitar.play({ volume: new_volume })
+	 * 
+	 */
 })
 
 
 function guitarInit() 
 {
-	// set up canvas context for visualizer
+	/**
+	 * Guitar with effect pedals plugged into 'mic'
+	 */
 	guitar = new Wad({
 		source  : 'mic',
 		tuna   : {
@@ -174,6 +180,17 @@ function guitarInit()
 		},
 	})
 
+	/**
+	 * Main Amp Use to set volume and tone - low/mid/hi 
+	 */
+
+	 /**
+	  * 
+	  * 
+		
+	  * 
+	  */
+	var q = 3;
 	amplifier = new Wad.Poly({
 		compressor : {
 			attack    : .003, // The amount of time, in seconds, to reduce the gain by 10dB. This parameter ranges from 0 to 1.
@@ -181,13 +198,16 @@ function guitarInit()
 			ratio     : 12,   // The amount of dB change in input for a 1 dB change in output. This parameter ranges from 1 to 20.
 			release   : .25,  // The amount of time (in seconds) to increase the gain by 10dB. This parameter ranges from 0 to 1.
 			threshold : -24	  // The decibel value above which the compression will start taking effect. This parameter ranges from -100 to 0.
-		}		
+		},
+
+		filter: [
+			{type : 'lowpass', frequency : 600, q : 1, env : {frequency : 800, attack : 0.5}},
+			{type : 'highpass', frequency : 1000, q : 5}
+		]	  
+		
 	})
 	amplifier.setVolume(0.5) 
 	amplifier.add(guitar)
-
-//   heading.textContent = 'Stacks of Amps'
-
 }
 
 // use Wad for audioContext
