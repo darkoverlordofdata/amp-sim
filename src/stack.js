@@ -202,12 +202,12 @@ function guitarInit()
 
 		filter: [
 			{type : 'lowpass', frequency : 100, q : 5 },
-			{type : 'bandpass', frequency : 1150, q : 5 }
+			{type : 'bandpass', frequency : 1150, q : 5 },
 			{type : 'highpass', frequency : 1500, q : 5 }
 		]	  
 		
 	})
-	amplifier.setVolume(0.5) 
+	amplifier.setVolume(0.75) 
 	amplifier.add(guitar)
 }
 
