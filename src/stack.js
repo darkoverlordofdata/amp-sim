@@ -201,8 +201,9 @@ function guitarInit()
 		},
 
 		filter: [
-			{type : 'lowpass', frequency : 600, q : 1, env : {frequency : 800, attack : 0.5}},
-			{type : 'highpass', frequency : 1000, q : 5}
+			{type : 'lowpass', frequency : 100, q : 5 },
+			{type : 'bandpass', frequency : 1150, q : 5 }
+			{type : 'highpass', frequency : 1500, q : 5 }
 		]	  
 		
 	})
