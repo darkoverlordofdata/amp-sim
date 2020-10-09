@@ -78,19 +78,41 @@ var chorus_bypass = 0
 var gain_gain = 10
 var gain_bypass = 0
 
-document.getElementById('start').addEventListener('click', () => {
-	guitarInit()
-	guitar.play()
-
-	/**
-	 * ?? to change volume, filter, panning, delay, rate ??
-	 * 
-	 * guitar.stop()
-	 * guitar.play({ volume: new_volume })
-	 * 
-	 */
+document.getElementById('power').addEventListener('click', (e) => {
+	if (e.target.value == 1) {
+		console.log("start playing guitar")
+		guitarInit()
+		guitar.play()
+	} else {
+		console.log("stop playing guitar")
+	 	guitar.stop()
+	}
 })
 
+document.getElementById('volume').addEventListener('change', (e) => {
+	console.log("volue = " + e.target.value)
+	amplifier.setVolume(e.target.value/100) 
+
+})
+
+
+// var elms=document.getElementsByTagName("webaudio-switch")
+// for(var i=0;i<elms.length;++i) {
+//   elms[i].addEventListener("change", (event)=>{
+//     console.log("change", event.target.id, event.target.value)
+//   })
+//   elms[i].addEventListener("click", (event)=>{
+// 	console.log("click", event.target.id, event.target.value)
+// 	if (event.target.value == 1) {
+// 		console.log("start playing guitar")
+// 		guitarInit()
+// 		guitar.play()
+// 	} else {
+// 		console.log("stop playing guitar")
+// 	 	guitar.stop()
+// 	}
+//   })
+// }
 
 function guitarInit() 
 {
@@ -200,14 +222,14 @@ function guitarInit()
 			threshold : -24	  // The decibel value above which the compression will start taking effect. This parameter ranges from -100 to 0.
 		},
 
-		filter: [
-			{type : 'lowpass', frequency : 100, q : 5 },
-			{type : 'bandpass', frequency : 1150, q : 5 },
-			{type : 'highpass', frequency : 1500, q : 5 }
-		]	  
+		// filter: [
+		// 	{type : 'lowpass', frequency : 100, q : 5 },
+		// 	{type : 'bandpass', frequency : 1150, q : 5 },
+		// 	{type : 'highpass', frequency : 1500, q : 5 }
+		// ]	  
 		
 	})
-	amplifier.setVolume(0.75) 
+	amplifier.setVolume(0.5) 
 	amplifier.add(guitar)
 }
 
@@ -362,3 +384,50 @@ function guitarMute() {
     mute.innerHTML = "Mute"
   }
 }
+
+
+// var message=""; 
+// var log=[]; 
+// var knobs = document.getElementsByTagName('webaudio-knob'); 
+// for(var i = 0; i < knobs.length; i++) { 
+// 	knobs[i].addEventListener("input",Dump,false); 
+// 	knobs[i].addEventListener("change",Dump,false); 
+// 	knobs[i].addEventListener("click",Dump,false); 
+// } 
+// var sliders = document.getElementsByTagName('webaudio-slider'); 
+// for(var i = 0; i < sliders.length; i++) { 
+// 	sliders[i].addEventListener("input",Dump,false); 
+// 	sliders[i].addEventListener("change",Dump,false); 
+// 	sliders[i].addEventListener("click",Dump,false); 
+// }
+// var switches = document.getElementsByTagName('webaudio-switch'); 
+// for(var i = 0; i < switches.length; i++) { 
+// 	switches[i].addEventListener("input",Dump,false); 
+// 	switches[i].addEventListener("change",Dump,false); 
+// 	switches[i].addEventListener("click",Dump,false); 
+// } 
+// var key=document.getElementById("keyboard"); 
+// key.addEventListener('input',Dump,false); 
+// key.addEventListener('change',Dump,false); 
+// key.addEventListener('click',Dump,false); 
+// key.addEventListener('note',Dump,false); 
+// var key2=document.getElementById("key2"); 
+// function Dump(e) { 
+// 	var str=""; 
+// 	if(e.note) { 
+// 		key2.setNote(e.note[0],e.note[1]); 
+// 		str=e.type + " : " + e.target.id + " e.note = [" + e.note + "] "; 
+// 	} else  {
+// 		str=e.type + " : " + e.target.id + ".value = " + e.target.value + " "; 
+// 	}
+// 	console.log(str); 
+// 	log.unshift(str); 
+// 	log.length=20; 
+// 	str=""; 
+// 	for(var i=19;i>=0;--i) { 
+// 		if(log[i]) str+=log[i]+""; 
+// 	} 
+// 	var evview=document.getElementById("events"); 
+// 	evview.innerHTML=str; 
+// 	evview.scrollTop=evview.scrollHeight; 
+// } 

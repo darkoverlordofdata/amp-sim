@@ -7,6 +7,8 @@
     <link href='css/fonts.css' rel='stylesheet' type='text/css'>
 	<link href="css/normalize.css" rel="stylesheet" type="text/css">
     <link href="css/app.css" rel="stylesheet" type="text/css">
+    <script> WebAudioControlsOptions={ }; </script> 
+    <script src="js/webaudio-controls/webaudio-controls.js"></script>
 </head>
 <body>
     <div class="wrapper">
@@ -15,7 +17,8 @@
         </header> -->
         <table>
             <tr>
-                <td><button id="start">&nbsp;On&nbsp;&nbsp;&nbsp;</button></td>
+                <td><webaudio-switch id="power" width="32" height="32" src="images/knobs/redbutton128.png"></webaudio-switch></td>
+                <!-- <td><button id="start">&nbsp;On&nbsp;&nbsp;&nbsp;</button></td> -->
                 <td><canvas class="visualizer" width="400" height="50"></canvas></td>
             </tr>
         </table>
@@ -41,8 +44,40 @@
                 <option value="off" selected>Off</option>
             </select>
             </div>
+
+            <div>
+                <table>
+                    <tr>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            <webaudio-slider id="volume" direction="vert"
+                                width="30" height="200" 
+                                min="0" max="100"
+                                value="50"
+                                src="images/img/vsliderbody.png"
+                                knobsrc="images/img/vsliderknob.png">
+                            </webaudio-slider>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>&nbsp;
+                        </hd>
+                        <th>&nbsp;
+                        </th>
+                        <th>Volume
+                        </th>
+                    </tr>
+                </table>
+            </div>
+    
         </form>
     </div>
+
+
+
     <script src="src/wad.js"></script>
     <script src="src/stack.js"></script>
 </body>
