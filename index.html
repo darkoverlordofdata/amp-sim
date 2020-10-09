@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Stax-Of-Amps</title>
+    <title>Amplifier Simulator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <link href='css/fonts.css' rel='stylesheet' type='text/css'>
@@ -12,49 +12,26 @@
 </head>
 <body>
     <div class="wrapper">
-        <!-- <header>
-            <h1>Stax-o-Amps</h1>
-        </header> -->
         <table>
             <tr>
                 <td>&nbsp;</td>
                 <td>
-                    <webaudio-switch id="power" width="64" height="64" src="images/knobs/switch_toggle.png"></webaudio-switch>
+                    <webaudio-switch id="mute" width="48" height="48" src="images/knobs/redbutton128.png"></webaudio-switch>
                 </td>
                 <td>&nbsp;</td>
                 <td>
-                    <canvas class="visualizer" width="500" height="50" style="width:100%; height:50px;"></canvas>
+                    <canvas class="visualizer" width="700" height="50" style="width:100%; height:50px;"></canvas>
                 </td>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
                 <td>
-                    <webaudio-switch id="mute" width="48" height="48" src="images/knobs/redbutton128.png"></webaudio-switch>
+                    <label class="controls">Power</label>
+                    <webaudio-switch id="power" width="64" height="64" src="images/knobs/switch_toggle.png"></webaudio-switch>
                 </td>
                 <td>&nbsp;</td>
             </tr>
         </table>
 
         <form class="controls">
-            <div style="display: none;">
-            <label for="visual">Visualization</label>
-            <select id="visual" name="visual">
-                <option value="sinewave">Wave</option>
-                <option value="frequencybars" selected>Bars</option>
-                <option value="off">Off</option>
-            </select>
-            </div>
-            <div style="display: none;">
-            <a class="mute">Mute</a>
-            </div>
-            <div style="display: none;">
-            <label for="guitar">Effects</label>
-            <select id="guitar" name="guitar">
-                <option value="distortion">Distortion</option>
-                <option value="convolver">Reverb</option>
-                <option value="biquad">Bass Boost</option>
-                <option value="off" selected>Off</option>
-            </select>
-            </div>
-
             <div>
                 <table>
                     <tr>
