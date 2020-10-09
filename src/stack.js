@@ -78,41 +78,27 @@ var chorus_bypass = 0
 var gain_gain = 10
 var gain_bypass = 0
 
+/**
+ * Events: Power On/Off
+ */
 document.getElementById('power').addEventListener('click', (e) => {
 	if (e.target.value == 1) {
-		console.log("start playing guitar")
 		guitarInit()
 		guitar.play()
+		document.getElementById('mute').value = 1
 	} else {
-		console.log("stop playing guitar")
 	 	guitar.stop()
 	}
 })
 
+/**
+ * Events: Volume Control
+ */
 document.getElementById('volume').addEventListener('change', (e) => {
-	console.log("volue = " + e.target.value)
 	amplifier.setVolume(e.target.value/100) 
-
 })
 
 
-// var elms=document.getElementsByTagName("webaudio-switch")
-// for(var i=0;i<elms.length;++i) {
-//   elms[i].addEventListener("change", (event)=>{
-//     console.log("change", event.target.id, event.target.value)
-//   })
-//   elms[i].addEventListener("click", (event)=>{
-// 	console.log("click", event.target.id, event.target.value)
-// 	if (event.target.value == 1) {
-// 		console.log("start playing guitar")
-// 		guitarInit()
-// 		guitar.play()
-// 	} else {
-// 		console.log("stop playing guitar")
-// 	 	guitar.stop()
-// 	}
-//   })
-// }
 
 function guitarInit() 
 {
@@ -266,7 +252,6 @@ var drawVisual
 function visualize() {
   WIDTH = canvas.width
   HEIGHT = canvas.height
-
 
   var visualSetting = visualSelect.value
   console.log(visualSetting)

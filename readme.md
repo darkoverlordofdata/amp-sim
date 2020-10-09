@@ -2,17 +2,10 @@
 
 inspired by https://pedals.io
 
-Amplifier Simulator using wad.js.
+Amplifier Simulator using wad.js and webaudio-controls.js .
 
 ## issues in Linux
-Ostensibly, this is cross platform. Practically speaking, it works like crap in Linux (pedals.io has the same issue). This is because the microphone is not handled well in Linux. The only exception I found was deepin, which works great. I believe this is at least partly because deepin has seperate instrumentation for internal and external microphone, as windows does.
+Ostensibly, this is cross platform. Practically speaking, it works like crap in Linux (pedals.io has the same issue). This is because the microphone is not handled well in Linux. So far, deepin and rebornos are the only distros I find usable.
 
-    distro          yes     no
-    ======          ===     ==
-    deepin          x
-    rebornos        x
-    popos                   x
-    kubuntu                 x
-    elementaryos            x
 
-    
+Works in browser (https://darkoverlordofdata.com/amp-sim/) or as an electron desktop application

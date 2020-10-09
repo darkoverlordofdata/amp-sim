@@ -17,14 +17,24 @@
         </header> -->
         <table>
             <tr>
-                <td><webaudio-switch id="power" width="32" height="32" src="images/knobs/redbutton128.png"></webaudio-switch></td>
-                <!-- <td><button id="start">&nbsp;On&nbsp;&nbsp;&nbsp;</button></td> -->
-                <td><canvas class="visualizer" width="400" height="50"></canvas></td>
+                <td>&nbsp;</td>
+                <td>
+                    <webaudio-switch id="power" width="64" height="64" src="images/knobs/switch_toggle.png"></webaudio-switch>
+                </td>
+                <td>&nbsp;</td>
+                <td>
+                    <canvas class="visualizer" width="500" height="50" style="width:100%; height:50px;"></canvas>
+                </td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                <td>
+                    <webaudio-switch id="mute" width="48" height="48" src="images/knobs/redbutton128.png"></webaudio-switch>
+                </td>
+                <td>&nbsp;</td>
             </tr>
         </table>
 
         <form class="controls">
-            <div>
+            <div style="display: none;">
             <label for="visual">Visualization</label>
             <select id="visual" name="visual">
                 <option value="sinewave">Wave</option>
@@ -32,10 +42,10 @@
                 <option value="off">Off</option>
             </select>
             </div>
-            <div>
+            <div style="display: none;">
             <a class="mute">Mute</a>
             </div>
-            <div>
+            <div style="display: none;">
             <label for="guitar">Effects</label>
             <select id="guitar" name="guitar">
                 <option value="distortion">Distortion</option>
@@ -54,7 +64,7 @@
                         </td>
                         <td>
                             <webaudio-slider id="volume" direction="vert"
-                                width="30" height="200" 
+                                width="60" height="200" 
                                 min="0" max="100"
                                 value="50"
                                 src="images/img/vsliderbody.png"
@@ -67,7 +77,7 @@
                         </hd>
                         <th>&nbsp;
                         </th>
-                        <th>Volume
+                        <th style="font-size: 2rem">Volume
                         </th>
                     </tr>
                 </table>
