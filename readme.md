@@ -48,7 +48,4 @@ Internally, it is using:
 * Chorus (enabled)
 * Gain (enabled)
 
-## issues in Linux
-This is written using the Web Audio API, so it's supposed to be cross platform. But practically speaking, the external microphone pickup sounds like crap in many Linux distro's. So far, deepin and rebornos are the only distros I've found usable.
-
 
