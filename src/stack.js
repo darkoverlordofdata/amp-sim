@@ -9,6 +9,13 @@
 Wad.logs.verbosity = 1
 var guitar
 var amplifier
+var audioCtx = Wad.audioContext
+// var analyser = audioCtx.createAnalyser()
+// analyser.minDecibels = -90;
+// analyser.maxDecibels = -10;
+// analyser.smoothingTimeConstant = 0.85;
+var canvas = document.querySelector('.visualizer')
+var canvasCtx = canvas.getContext("2d")
 
 // effect default flag values
 
@@ -85,6 +92,7 @@ document.getElementById('power').addEventListener('click', (e) => {
 	if (e.target.value == 1) {
 		guitarInit()
 		guitar.play()
+		visualize()
 		document.getElementById('mute').value = 1
 	} else {
 	 	guitar.stop()
@@ -98,7 +106,7 @@ document.getElementById('volume').addEventListener('change', (e) => {
 	amplifier.setVolume(e.target.value/100) 
 })
 
-
+var drawVisual
 
 function guitarInit() 
 {
@@ -188,6 +196,7 @@ function guitarInit()
 		},
 	})
 
+
 	/**
 	 * Main Amp Use to set volume and tone - low/mid/hi 
 	 */
@@ -219,51 +228,112 @@ function guitarInit()
 	amplifier.add(guitar)
 
 //https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API
+}
 
-	var canvas = document.querySelector('.visualizer')
-	var canvasCtx = canvas.getContext("2d")
+function visualize() {
+
 	var WIDTH = canvas.width
 	var HEIGHT = canvas.height
 
 	console.log(WIDTH)
 	console.log(HEIGHT)
 
-	// use Wad for audioContext
-	var audioCtx = Wad.audioContext
-	var analyser = audioCtx.createAnalyser()
+	var analyser = amplifier.input
+	// analyser.connect(amplifier.output)
 
-	// guitar.mediaStreamSource.connect(analyser)
-	analyser.connect(amplifier)
+	// amplifier.output.connect(guitar.destination)
+	// analyser.connect(guitar.destination)
+
 	// analyser.connect(audioCtx.destination)
+	// guitar.mediaStreamSource.connect(analyser)
 
-	analyser.fftSize = 256
-	var bufferLength = analyser.frequencyBinCount
-	console.log(bufferLength)
-	var dataArray = new Uint8Array(bufferLength)
+    var visualSetting = "sinewave";
+    // var visualSetting = "frequencybars";
+    console.log(visualSetting);
 
-	canvasCtx.clearRect(0, 0, WIDTH, HEIGHT)
+    if(visualSetting === "sinewave") {
+      analyser.fftSize = 2048;
+      var bufferLength = analyser.fftSize;
+      console.log(bufferLength);
+      var dataArray = new Uint8Array(bufferLength);
 
-	function draw() {
-		var drawVisual = requestAnimationFrame(draw)
+      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
-		analyser.getByteFrequencyData(dataArray)
+      var draw = function() {
 
-		canvasCtx.fillStyle = 'rgb(0, 0, 0)'
-		canvasCtx.fillRect(0, 0, WIDTH, HEIGHT)
+        drawVisual = requestAnimationFrame(draw);
 
-		var barWidth = (WIDTH / bufferLength) * 2.5
-		var barHeight
-		var x = 0
+        analyser.getByteTimeDomainData(dataArray);
 
-		for(var i = 0; i < bufferLength; i++) {
-			barHeight = dataArray[i]/2
+        canvasCtx.fillStyle = 'rgb(200, 200, 200)';
+        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
 
-			canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)'
-			canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight)
+        canvasCtx.lineWidth = 2;
+        canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
 
-			x += barWidth + 1
-		}
-	}
-		
-	draw()
-}
+        canvasCtx.beginPath();
+
+        var sliceWidth = WIDTH * 1.0 / bufferLength;
+        var x = 0;
+
+        for(var i = 0; i < bufferLength; i++) {
+
+          var v = dataArray[i] / 128.0;
+          var y = v * HEIGHT/2;
+
+          if(i === 0) {
+            canvasCtx.moveTo(x, y);
+          } else {
+            canvasCtx.lineTo(x, y);
+          }
+
+          x += sliceWidth;
+        }
+
+        canvasCtx.lineTo(canvas.width, canvas.height/2);
+        canvasCtx.stroke();
+      };
+
+      draw();
+
+    } else if(visualSetting == "frequencybars") {
+      analyser.fftSize = 256;
+      var bufferLengthAlt = analyser.frequencyBinCount;
+      console.log(bufferLengthAlt);
+      var dataArrayAlt = new Uint8Array(bufferLengthAlt);
+
+      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+
+      var drawAlt = function() {
+        drawVisual = requestAnimationFrame(drawAlt);
+
+        analyser.getByteFrequencyData(dataArrayAlt);
+
+        canvasCtx.fillStyle = 'rgb(0, 0, 0)';
+        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+
+        var barWidth = (WIDTH / bufferLengthAlt) * 2.5;
+        var barHeight;
+        var x = 0;
+
+        for(var i = 0; i < bufferLengthAlt; i++) {
+          barHeight = dataArrayAlt[i];
+
+          canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
+          canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight/2);
+
+          x += barWidth + 1;
+        }
+      };
+
+      drawAlt();
+
+    } else if(visualSetting == "off") {
+      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+      canvasCtx.fillStyle = "red";
+      canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+    }
+
+  }
+
+
