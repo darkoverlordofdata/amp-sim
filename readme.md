@@ -1,6 +1,6 @@
 # amp-sim
 
-Amplifier Simulator with wad.js and webaudio-controls.js. Tuna.js is used for effects.
+Amplifier Simulator with wad.js and webaudio-controls.js.
 
 ## Plug in
 

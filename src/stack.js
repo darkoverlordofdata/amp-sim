@@ -198,7 +198,7 @@ function guitarInit()
 		
 	  * 
 	  */
-	var q = 3;
+	var q = 3
 	amplifier = new Wad.Poly({
 		compressor : {
 			attack    : .003, // The amount of time, in seconds, to reduce the gain by 10dB. This parameter ranges from 0 to 1.
@@ -217,9 +217,53 @@ function guitarInit()
 	})
 	amplifier.setVolume(0.5) 
 	amplifier.add(guitar)
-}
 
-// use Wad for audioContext
-var audioCtx = Wad.audioContext
 //https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API
 
+	var canvas = document.querySelector('.visualizer')
+	var canvasCtx = canvas.getContext("2d")
+	var WIDTH = canvas.width
+	var HEIGHT = canvas.height
+
+	console.log(WIDTH)
+	console.log(HEIGHT)
+
+	// use Wad for audioContext
+	var audioCtx = Wad.audioContext
+	var analyser = audioCtx.createAnalyser()
+
+	// guitar.mediaStreamSource.connect(analyser)
+	analyser.connect(amplifier)
+	// analyser.connect(audioCtx.destination)
+
+	analyser.fftSize = 256
+	var bufferLength = analyser.frequencyBinCount
+	console.log(bufferLength)
+	var dataArray = new Uint8Array(bufferLength)
+
+	canvasCtx.clearRect(0, 0, WIDTH, HEIGHT)
+
+	function draw() {
+		var drawVisual = requestAnimationFrame(draw)
+
+		analyser.getByteFrequencyData(dataArray)
+
+		canvasCtx.fillStyle = 'rgb(0, 0, 0)'
+		canvasCtx.fillRect(0, 0, WIDTH, HEIGHT)
+
+		var barWidth = (WIDTH / bufferLength) * 2.5
+		var barHeight
+		var x = 0
+
+		for(var i = 0; i < bufferLength; i++) {
+			barHeight = dataArray[i]/2
+
+			canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)'
+			canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight)
+
+			x += barWidth + 1
+		}
+	}
+		
+	draw()
+}
