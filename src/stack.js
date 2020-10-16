@@ -10,12 +10,10 @@ Wad.logs.verbosity = 1
 var guitar
 var amplifier
 var audioCtx = Wad.audioContext
-// var analyser = audioCtx.createAnalyser()
-// analyser.minDecibels = -90;
-// analyser.maxDecibels = -10;
-// analyser.smoothingTimeConstant = 0.85;
+var visualSetting = "sinewave"
 var canvas = document.querySelector('.visualizer')
 var canvasCtx = canvas.getContext("2d")
+var drawVisual
 
 // effect default flag values
 
@@ -106,7 +104,19 @@ document.getElementById('volume').addEventListener('change', (e) => {
 	amplifier.setVolume(e.target.value/100) 
 })
 
-var drawVisual
+
+document.getElementById('visualStyle').addEventListener('click', (e) => {
+	if (e.target.value == 1) {
+		visualSetting = "frequencybars"
+		window.cancelAnimationFrame(drawVisual)
+		visualize()
+	} else {
+		visualSetting = "sinewave"
+		window.cancelAnimationFrame(drawVisual)
+		visualize()
+	}
+})
+
 
 function guitarInit() 
 {
@@ -232,13 +242,18 @@ function guitarInit()
 
 function visualize() {
 
-	var WIDTH = canvas.width
-	var HEIGHT = canvas.height
+	var width = canvas.width
+	var height = canvas.height
 
-	console.log(WIDTH)
-	console.log(HEIGHT)
+	console.log(width)
+	console.log(height)
 
 	var analyser = amplifier.input
+
+	analyser.minDecibels = -90;
+	analyser.maxDecibels = -10;
+	analyser.smoothingTimeConstant = 0.85;
+
 	// analyser.connect(amplifier.output)
 
 	// amplifier.output.connect(guitar.destination)
@@ -247,17 +262,17 @@ function visualize() {
 	// analyser.connect(audioCtx.destination)
 	// guitar.mediaStreamSource.connect(analyser)
 
-    var visualSetting = "sinewave";
+    // var visualSetting = "sinewave";
     // var visualSetting = "frequencybars";
     console.log(visualSetting);
 
-    if(visualSetting === "sinewave") {
+    if (visualSetting === "sinewave") {
       analyser.fftSize = 2048;
       var bufferLength = analyser.fftSize;
       console.log(bufferLength);
       var dataArray = new Uint8Array(bufferLength);
 
-      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+      canvasCtx.clearRect(0, 0, width, height);
 
       var draw = function() {
 
@@ -266,22 +281,22 @@ function visualize() {
         analyser.getByteTimeDomainData(dataArray);
 
         canvasCtx.fillStyle = 'rgb(200, 200, 200)';
-        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+        canvasCtx.fillRect(0, 0, width, height);
 
         canvasCtx.lineWidth = 2;
         canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
 
         canvasCtx.beginPath();
 
-        var sliceWidth = WIDTH * 1.0 / bufferLength;
+        var sliceWidth = width * 1.0 / bufferLength;
         var x = 0;
 
-        for(var i = 0; i < bufferLength; i++) {
+        for (var i = 0; i < bufferLength; i++) {
 
           var v = dataArray[i] / 128.0;
-          var y = v * HEIGHT/2;
+          var y = v * height/2;
 
-          if(i === 0) {
+          if (i === 0) {
             canvasCtx.moveTo(x, y);
           } else {
             canvasCtx.lineTo(x, y);
@@ -296,42 +311,42 @@ function visualize() {
 
       draw();
 
-    } else if(visualSetting == "frequencybars") {
+    } else if (visualSetting == "frequencybars") {
       analyser.fftSize = 256;
       var bufferLengthAlt = analyser.frequencyBinCount;
       console.log(bufferLengthAlt);
       var dataArrayAlt = new Uint8Array(bufferLengthAlt);
 
-      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+      canvasCtx.clearRect(0, 0, width, height);
 
-      var drawAlt = function() {
-        drawVisual = requestAnimationFrame(drawAlt);
+      var draw = function() {
+        drawVisual = requestAnimationFrame(draw);
 
         analyser.getByteFrequencyData(dataArrayAlt);
 
         canvasCtx.fillStyle = 'rgb(0, 0, 0)';
-        canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+        canvasCtx.fillRect(0, 0, width, height);
 
-        var barWidth = (WIDTH / bufferLengthAlt) * 2.5;
+        var barWidth = (width / bufferLengthAlt) * 2.5;
         var barHeight;
         var x = 0;
 
-        for(var i = 0; i < bufferLengthAlt; i++) {
+        for (var i = 0; i < bufferLengthAlt; i++) {
           barHeight = dataArrayAlt[i];
 
           canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
-          canvasCtx.fillRect(x,HEIGHT-barHeight/2,barWidth,barHeight/2);
+          canvasCtx.fillRect(x,height-barHeight/2,barWidth,barHeight/2);
 
           x += barWidth + 1;
         }
       };
 
-      drawAlt();
+      draw();
 
-    } else if(visualSetting == "off") {
-      canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
+    } else if (visualSetting == "off") {
+      canvasCtx.clearRect(0, 0, width, height);
       canvasCtx.fillStyle = "red";
-      canvasCtx.fillRect(0, 0, WIDTH, HEIGHT);
+      canvasCtx.fillRect(0, 0, width, height);
     }
 
   }

@@ -16,7 +16,7 @@
             <tr>
                 <td>&nbsp;</td>
                 <td>
-                    <webaudio-switch id="mute" width="48" height="48" src="images/knobs/redbutton128.png"></webaudio-switch>
+                    <webaudio-switch id="visualStyle" width="48" height="48" src="images/knobs/redbutton128.png"></webaudio-switch>
                 </td>
                 <td>&nbsp;</td>
                 <td>
@@ -32,6 +32,15 @@
         </table>
 
         <form class="controls">
+
+            <div>
+                <label for="cabinet">Cabinet</label>
+                <select id="cabinet" name="cabinet">
+                    <option value="impulses/impulse_guitar.wav" selected>generic</option>
+                    <option value="impulses/marshall-1_impact.wav">marshall</option>
+                </select>
+            </div>
+
             <div>
                 <table>
                     <tr>
@@ -48,14 +57,93 @@
                                 knobsrc="images/img/vsliderknob.png">
                             </webaudio-slider>
                         </td>
+
+                        <!-- Amplifier: Reverb -->
+                        <td>
+                            <webaudio-slider id="reverb" direction="vert"
+                                width="60" height="200" 
+                                min="0" max="100"
+                                value="0"
+                                src="images/img/vsliderbody.png"
+                                knobsrc="images/img/vsliderknob.png">
+                            </webaudio-slider>
+                        </td>
+                        <td></td>
+
+                        <!-- Guitar: Gain -->
+                        <!-- <td>
+                            <webaudio-slider id="gain" direction="vert"
+                                width="60" height="200" 
+                                min="0" max="100"
+                                value="50"
+                                src="images/img/vsliderbody.png"
+                                knobsrc="images/img/vsliderknob.png">
+                            </webaudio-slider>
+                        </td>
+                        <td></td> -->
+
+                        <!-- Guitar: Chorus -->
+                        <!-- <td>
+                            <webaudio-slider id="chorus" direction="vert"
+                                width="60" height="200" 
+                                min="0" max="100"
+                                value="50"
+                                src="images/img/vsliderbody.png"
+                                knobsrc="images/img/vsliderknob.png">
+                            </webaudio-slider>
+                        </td>
+                        <td></td> -->
+
+                        <!-- Guitar: Phaser -->
+                        <!-- <td>
+                            <webaudio-slider id="phaser" direction="vert"
+                                width="60" height="200" 
+                                min="0" max="100"
+                                value="50"
+                                src="images/img/vsliderbody.png"
+                                knobsrc="images/img/vsliderknob.png">
+                            </webaudio-slider>
+                        </td>
+                        <td></td> -->
+
+                        <!-- Guitar: Compressor -->
+                        <!-- <td>
+                            <webaudio-slider id="compressor" direction="vert"
+                                width="60" height="200" 
+                                min="0" max="100"
+                                value="50"
+                                src="images/img/vsliderbody.png"
+                                knobsrc="images/img/vsliderknob.png">
+                            </webaudio-slider>
+                        </td>
+                        <td></td>
+ -->
+
+                        <!-- Guitar: Bass Filter -->
+                        <!-- Guitar: Mid Filter -->
+                        <!-- Guitar: Treble Filter -->
+                        <!-- Guitar: Wah Wah -->
+                        <!-- Guitar: Tremelo -->
+                        <!-- Guitar: Delay -->
+
+
+
+
                     </tr>
                     <tr>
-                        <th>&nbsp;
-                        </hd>
-                        <th>&nbsp;
-                        </th>
-                        <th style="font-size: 2rem">Volume
-                        </th>
+                        <th>&nbsp;</td>
+                        <th>&nbsp;</th>
+                        <th style="font-size: 2rem"><label>Volume</label></th>
+                        <th style="font-size: 2rem"><label>Reverb</label></th>
+                        <th>&nbsp;</th>
+                        <!-- <th style="font-size: 2rem"><label>Gain</label></th>
+                        <th>&nbsp;</th>
+                        <th style="font-size: 2rem"><label>Chorus</label></th>
+                        <th>&nbsp;</th>
+                        <th style="font-size: 2rem"><label>Phaser</label></th>
+                        <th>&nbsp;</th>
+                        <th style="font-size: 2rem"><label>Compressor</label></th>
+                        <th>&nbsp;</th> -->
                     </tr>
                 </table>
             </div>
