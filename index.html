@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Amplifier Simulator</title>
+    <title>Overload Amplification</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
     <link href='css/fonts.css' rel='stylesheet' type='text/css'>
@@ -12,6 +12,7 @@
 </head>
 <body>
     <div class="wrapper">
+        <h1>OVERLOAD</h1>
         <table>
             <tr>
                 <td>&nbsp;</td>
@@ -28,6 +29,11 @@
                     <webaudio-switch id="power" width="64" height="64" src="images/knobs/switch_toggle.png"></webaudio-switch>
                 </td>
                 <td>&nbsp;</td>
+                <td>
+                    <label class="controls">Reverb</label>
+                    <webaudio-switch id="reverb" width="48" height="48" src="images/knobs/redbutton128.png"></webaudio-switch>
+                </td>
+                <td>&nbsp;</td>
             </tr>
         </table>
 
@@ -36,14 +42,19 @@
             <div>
                 <label for="cabinet">Cabinet</label>
                 <select id="cabinet" name="cabinet">
-                    <option value="impulses/impulse_guitar.wav" selected>generic</option>
-                    <option value="impulses/marshall-1_impact.wav">marshall</option>
+                    <option value="impulses/cabinet/generic.wav">generic</option>
+                    <option value="impulses/cabinet/Ampeg Classic B5 Left A 230 200 320.wav">Ampeg Classic</option>
+                    <option value="impulses/cabinet/Randall RT412 SM57 A 3 0 2.wav" selected>Randall RT412</option>
+                    <option value="impulses/cabinet/Rocksta Reactions Fender Twin Reverb SM57 A 2 3 3 45.wav">Fender Twin</option>
+                    <option value="impulses/cabinet/Rocksta Reactions Marshall JCM800 Lead Series SM57 C -5 0 1.wav">Marshall JCM800</option>
+                    <option value="impulses/cabinet/Rocksta Reactions Mesa Traditional SM57 C 5 -1 3 45.wav">Mesa Traditional</option>
                 </select>
             </div>
 
             <div>
                 <table>
-                    <tr>
+                    <td>&nbsp;</td>
+                        <tr>
                         <td>
                         </td>
                         <td>
@@ -59,7 +70,7 @@
                         </td>
 
                         <!-- Amplifier: Reverb -->
-                        <td>
+                        <!-- <td>
                             <webaudio-slider id="reverb" direction="vert"
                                 width="60" height="200" 
                                 min="0" max="100"
@@ -68,7 +79,7 @@
                                 knobsrc="images/img/vsliderknob.png">
                             </webaudio-slider>
                         </td>
-                        <td></td>
+                        <td></td> -->
 
                         <!-- Guitar: Gain -->
                         <!-- <td>
@@ -134,8 +145,8 @@
                         <th>&nbsp;</td>
                         <th>&nbsp;</th>
                         <th style="font-size: 2rem"><label>Volume</label></th>
-                        <th style="font-size: 2rem"><label>Reverb</label></th>
-                        <th>&nbsp;</th>
+                        <!-- <th style="font-size: 2rem"><label>Reverb</label></th>
+                        <th>&nbsp;</th> -->
                         <!-- <th style="font-size: 2rem"><label>Gain</label></th>
                         <th>&nbsp;</th>
                         <th style="font-size: 2rem"><label>Chorus</label></th>
@@ -154,6 +165,6 @@
 
 
     <script src="src/wad.js"></script>
-    <script src="src/stack.js"></script>
+    <script src="src/ui.js"></script>
 </body>
 </html>

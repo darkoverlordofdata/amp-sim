@@ -1,7 +1,5 @@
 /**
- * stack.js
- * 
- * a stack of amps
+ * ui.js
  * 
  * 
  */
@@ -10,7 +8,8 @@ Wad.logs.verbosity = 1
 var guitar
 var amplifier
 var audioCtx = Wad.audioContext
-var visualSetting = "sinewave"
+// var visualSetting = "sinewave"
+var visualSetting = "frequencybars"
 var canvas = document.querySelector('.visualizer')
 var canvasCtx = canvas.getContext("2d")
 var drawVisual
@@ -55,7 +54,7 @@ var filter_filter_type = "lowpass" 	//lowpass, highpass, bandpass, lowshelf, hig
 var filter_bypass = 1
 
 var cabinet_makeup_gain = 1       	//0 to 20
-var cabinet_impulse_path = "impulses/impulse_guitar.wav"    
+var cabinet_impulse_path = "impulses/cabinet/generic.wav"    
 var cabinet_bypass = 0				
 
 var compressor_threshold = -20    	//-100 to 0
@@ -83,6 +82,15 @@ var chorus_bypass = 0
 var gain_gain = 10
 var gain_bypass = 0
 
+var reverb_highCut = 22050                         //20 to 22050
+var reverb_lowCut = 20                             //20 to 22050
+var reverb_dryLevel = 1                            //0 to 1+
+var reverb_wetLevel = 1                            //0 to 1+
+var reverb_level = 1                               //0 to 1+, adjusts total output of both wet and dry
+var reverb_impulse = "impulses/reverb/generic.wav"    //the path to your impulse response
+var reverb_bypass = 1
+
+
 /**
  * Events: Power On/Off
  */
@@ -91,9 +99,20 @@ document.getElementById('power').addEventListener('click', (e) => {
 		guitarInit()
 		guitar.play()
 		visualize()
-		document.getElementById('mute').value = 1
+		document.getElementById('visualStyle').value = 1
 	} else {
 	 	guitar.stop()
+	}
+})
+
+/**
+ * Events: Reverb On/Off
+ */
+document.getElementById('reverb').addEventListener('click', (e) => {
+	if (e.target.value == 1) {
+		guitar.tuna.Convolver.bypass = 1;
+	} else {
+		guitar.tuna.Convolver.bypass = 0;
 	}
 })
 
@@ -105,6 +124,9 @@ document.getElementById('volume').addEventListener('change', (e) => {
 })
 
 
+/**
+ * Events: Select Visual Style
+ */
 document.getElementById('visualStyle').addEventListener('click', (e) => {
 	if (e.target.value == 1) {
 		visualSetting = "frequencybars"
@@ -117,9 +139,12 @@ document.getElementById('visualStyle').addEventListener('click', (e) => {
 	}
 })
 
-
 function guitarInit() 
 {
+
+	var cabinetSelect = document.getElementById("cabinet");
+	console.log(cabinetSelect.value)
+
 	/**
 	 * Guitar with effect pedals plugged into 'mic'
 	 */
@@ -171,8 +196,18 @@ function guitarInit()
 			},
 			Cabinet: {
 				makeupGain: 	cabinet_makeup_gain,
-				impulsePath: 	cabinet_impulse_path,
+				// impulsePath: 	cabinet_impulse_path,
+				impulsePath: 	cabinetSelect.value,
 				bypass: 		cabinet_bypass				
+			},
+			Convolver: {								// Reverb:
+				highCut: 		reverb_highCut,                         
+				lowCut: 		reverb_lowCut,                             
+				dryLevel: 		reverb_dryLevel,                            
+				wetLevel: 		reverb_wetLevel,                            
+				level: 			reverb_level,                               
+				impulse: 		reverb_impulse,    
+				bypass: 		reverb_bypass
 			},
 			Compressor: {
 				threshold: 		compressor_threshold,
@@ -226,6 +261,10 @@ function guitarInit()
 			release   : .25,  // The amount of time (in seconds) to increase the gain by 10dB. This parameter ranges from 0 to 1.
 			threshold : -24	  // The decibel value above which the compression will start taking effect. This parameter ranges from -100 to 0.
 		},
+		// reverb: {
+		// 	wet : 0.0,
+		// 	impulse : 'impulses/reverb/widehall.wav' 
+		// },
 
 		// filter: [
 		// 	{type : 'lowpass', frequency : 100, q : 5 },
@@ -305,7 +344,8 @@ function visualize() {
           x += sliceWidth;
         }
 
-        canvasCtx.lineTo(canvas.width, canvas.height/2);
+        // canvasCtx.lineTo(canvas.width, canvas.height/2);
+        canvasCtx.lineTo(width, height/2);
         canvasCtx.stroke();
       };
 
