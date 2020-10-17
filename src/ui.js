@@ -67,8 +67,10 @@ var compressor_automakeup = false 	//true/false
 var compressor_bypass = 0
 
 var phaser_rate = 0.1              	//0.01 to 8 is a decent range, but higher values are possible
+// var phaser_rate = .2              	//0.01 to 8 is a decent range, but higher values are possible
 var phaser_depth = 0.6              //0 to 1
 var phaser_feedback = 0.7           //0 to 1+
+// var phaser_feedback = 0.4           //0 to 1+
 var phaser_stereo_phase = 40        //0 to 180
 var phaser_base_modulation_frequency = 700  //500 to 1500
 var phaser_bypass = 0
@@ -108,13 +110,13 @@ document.getElementById('power').addEventListener('click', (e) => {
 /**
  * Events: Reverb On/Off
  */
-document.getElementById('reverb').addEventListener('click', (e) => {
-	if (e.target.value == 1) {
-		guitar.tuna.Convolver.bypass = 1;
-	} else {
-		guitar.tuna.Convolver.bypass = 0;
-	}
-})
+// document.getElementById('reverb').addEventListener('click', (e) => {
+// 	if (e.target.value == 1) {
+// 		guitar.tuna.Convolver.bypass = 1
+// 	} else {
+// 		guitar.tuna.Convolver.bypass = 0
+// 	}
+// })
 
 /**
  * Events: Volume Control
@@ -142,7 +144,7 @@ document.getElementById('visualStyle').addEventListener('click', (e) => {
 function guitarInit() 
 {
 
-	var cabinetSelect = document.getElementById("cabinet");
+	var cabinetSelect = document.getElementById("cabinet")
 	console.log(cabinetSelect.value)
 
 	/**
@@ -150,6 +152,18 @@ function guitarInit()
 	 */
 	guitar = new Wad({
 		source  : 'mic',
+		// reverb: {
+		// 	wet : 0.0,
+		// 	impulse : 'impulses/reverb/widehall.wav' 
+		// 	impulse : 'impulses/reverb/reverb_impulse.wav' 
+		// },
+
+		// filter: [
+		// 	{type : 'lowpass', frequency : 100, q : 5 },
+		// 	{type : 'bandpass', frequency : 1150, q : 5 },
+		// 	{type : 'highpass', frequency : 1500, q : 5 }
+		// ]	  
+
 		tuna   : {
 			Overdrive : {
 				outputGain: 	overdrive_output_gain, 
@@ -200,15 +214,15 @@ function guitarInit()
 				impulsePath: 	cabinetSelect.value,
 				bypass: 		cabinet_bypass				
 			},
-			Convolver: {								// Reverb:
-				highCut: 		reverb_highCut,                         
-				lowCut: 		reverb_lowCut,                             
-				dryLevel: 		reverb_dryLevel,                            
-				wetLevel: 		reverb_wetLevel,                            
-				level: 			reverb_level,                               
-				impulse: 		reverb_impulse,    
-				bypass: 		reverb_bypass
-			},
+			// Convolver: {								// Reverb:
+			// 	highCut: 		reverb_highCut,                         
+			// 	lowCut: 		reverb_lowCut,                             
+			// 	dryLevel: 		reverb_dryLevel,                            
+			// 	wetLevel: 		reverb_wetLevel,                            
+			// 	level: 			reverb_level,                               
+			// 	impulse: 		reverb_impulse,    
+			// 	bypass: 		1, //reverb_bypass
+			// },
 			Compressor: {
 				threshold: 		compressor_threshold,
 				makeupGain: 	compressor_makeup_gain,
@@ -261,24 +275,17 @@ function guitarInit()
 			release   : .25,  // The amount of time (in seconds) to increase the gain by 10dB. This parameter ranges from 0 to 1.
 			threshold : -24	  // The decibel value above which the compression will start taking effect. This parameter ranges from -100 to 0.
 		},
-		// reverb: {
-		// 	wet : 0.0,
-		// 	impulse : 'impulses/reverb/widehall.wav' 
-		// },
-
-		// filter: [
-		// 	{type : 'lowpass', frequency : 100, q : 5 },
-		// 	{type : 'bandpass', frequency : 1150, q : 5 },
-		// 	{type : 'highpass', frequency : 1500, q : 5 }
-		// ]	  
 		
 	})
 	amplifier.setVolume(0.5) 
 	amplifier.add(guitar)
-
-//https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Visualizations_with_Web_Audio_API
 }
 
+/**
+ * visualize 
+ * 
+ * oscilliscope display
+ */
 function visualize() {
 
 	var width = canvas.width
@@ -287,106 +294,97 @@ function visualize() {
 	console.log(width)
 	console.log(height)
 
-	var analyser = amplifier.input
+	// var analyser = amplifier.input
+	var analyser = amplifier.output
 
-	analyser.minDecibels = -90;
-	analyser.maxDecibels = -10;
-	analyser.smoothingTimeConstant = 0.85;
+	analyser.minDecibels = -90
+	analyser.maxDecibels = -10
+	analyser.smoothingTimeConstant = 0.85
 
-	// analyser.connect(amplifier.output)
-
-	// amplifier.output.connect(guitar.destination)
-	// analyser.connect(guitar.destination)
-
-	// analyser.connect(audioCtx.destination)
-	// guitar.mediaStreamSource.connect(analyser)
-
-    // var visualSetting = "sinewave";
-    // var visualSetting = "frequencybars";
-    console.log(visualSetting);
+    console.log(visualSetting)
 
     if (visualSetting === "sinewave") {
-      analyser.fftSize = 2048;
-      var bufferLength = analyser.fftSize;
-      console.log(bufferLength);
-      var dataArray = new Uint8Array(bufferLength);
+      analyser.fftSize = 2048
+      var bufferLength = analyser.fftSize
+      console.log(bufferLength)
+      var dataArray = new Uint8Array(bufferLength)
 
-      canvasCtx.clearRect(0, 0, width, height);
+      canvasCtx.clearRect(0, 0, width, height)
 
       var draw = function() {
 
-        drawVisual = requestAnimationFrame(draw);
+        drawVisual = requestAnimationFrame(draw)
 
-        analyser.getByteTimeDomainData(dataArray);
+        analyser.getByteTimeDomainData(dataArray)
 
-        canvasCtx.fillStyle = 'rgb(200, 200, 200)';
-        canvasCtx.fillRect(0, 0, width, height);
+        canvasCtx.fillStyle = 'rgb(200, 200, 200)'
+        canvasCtx.fillRect(0, 0, width, height)
 
-        canvasCtx.lineWidth = 2;
-        canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
+        canvasCtx.lineWidth = 2
+        canvasCtx.strokeStyle = 'rgb(0, 0, 0)'
 
-        canvasCtx.beginPath();
+        canvasCtx.beginPath()
 
-        var sliceWidth = width * 1.0 / bufferLength;
-        var x = 0;
+        var sliceWidth = width * 1.0 / bufferLength
+        var x = 0
 
         for (var i = 0; i < bufferLength; i++) {
 
-          var v = dataArray[i] / 128.0;
-          var y = v * height/2;
+          var v = dataArray[i] / 128.0
+          var y = v * height/2
 
           if (i === 0) {
-            canvasCtx.moveTo(x, y);
+            canvasCtx.moveTo(x, y)
           } else {
-            canvasCtx.lineTo(x, y);
+            canvasCtx.lineTo(x, y)
           }
 
-          x += sliceWidth;
+          x += sliceWidth
         }
 
-        // canvasCtx.lineTo(canvas.width, canvas.height/2);
-        canvasCtx.lineTo(width, height/2);
-        canvasCtx.stroke();
-      };
+        // canvasCtx.lineTo(canvas.width, canvas.height/2)
+        canvasCtx.lineTo(width, height/2)
+        canvasCtx.stroke()
+      }
 
-      draw();
+      draw()
 
     } else if (visualSetting == "frequencybars") {
-      analyser.fftSize = 256;
-      var bufferLengthAlt = analyser.frequencyBinCount;
-      console.log(bufferLengthAlt);
-      var dataArrayAlt = new Uint8Array(bufferLengthAlt);
+      analyser.fftSize = 256
+      var bufferLengthAlt = analyser.frequencyBinCount
+      console.log(bufferLengthAlt)
+      var dataArrayAlt = new Uint8Array(bufferLengthAlt)
 
-      canvasCtx.clearRect(0, 0, width, height);
+      canvasCtx.clearRect(0, 0, width, height)
 
       var draw = function() {
-        drawVisual = requestAnimationFrame(draw);
+        drawVisual = requestAnimationFrame(draw)
 
-        analyser.getByteFrequencyData(dataArrayAlt);
+        analyser.getByteFrequencyData(dataArrayAlt)
 
-        canvasCtx.fillStyle = 'rgb(0, 0, 0)';
-        canvasCtx.fillRect(0, 0, width, height);
+        canvasCtx.fillStyle = 'rgb(0, 0, 0)'
+        canvasCtx.fillRect(0, 0, width, height)
 
-        var barWidth = (width / bufferLengthAlt) * 2.5;
-        var barHeight;
-        var x = 0;
+        var barWidth = (width / bufferLengthAlt) * 2.5
+        var barHeight
+        var x = 0
 
         for (var i = 0; i < bufferLengthAlt; i++) {
-          barHeight = dataArrayAlt[i];
+          barHeight = dataArrayAlt[i]
 
-          canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
-          canvasCtx.fillRect(x,height-barHeight/2,barWidth,barHeight/2);
+          canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)'
+          canvasCtx.fillRect(x,height-barHeight/2,barWidth,barHeight/2)
 
-          x += barWidth + 1;
+          x += barWidth + 1
         }
-      };
+      }
 
-      draw();
+      draw()
 
     } else if (visualSetting == "off") {
-      canvasCtx.clearRect(0, 0, width, height);
-      canvasCtx.fillStyle = "red";
-      canvasCtx.fillRect(0, 0, width, height);
+      canvasCtx.clearRect(0, 0, width, height)
+      canvasCtx.fillStyle = "red"
+      canvasCtx.fillRect(0, 0, width, height)
     }
 
   }
