@@ -108,15 +108,12 @@ document.getElementById('power').addEventListener('click', (e) => {
 })
 
 /**
- * Events: Reverb On/Off
+ * Events: Reverb Control
  */
-// document.getElementById('reverb').addEventListener('click', (e) => {
-// 	if (e.target.value == 1) {
-// 		guitar.tuna.Convolver.bypass = 1
-// 	} else {
-// 		guitar.tuna.Convolver.bypass = 0
-// 	}
-// })
+document.getElementById('reverb').addEventListener('change', (e) => {
+	guitar.setReverb(e.target.value/100) 
+})
+
 
 /**
  * Events: Volume Control
@@ -152,11 +149,11 @@ function guitarInit()
 	 */
 	guitar = new Wad({
 		source  : 'mic',
-		// reverb: {
-		// 	wet : 0.0,
-		// 	impulse : 'impulses/reverb/widehall.wav' 
-		// 	impulse : 'impulses/reverb/reverb_impulse.wav' 
-		// },
+		reverb: {
+			wet : 0.0,
+			// impulse : 'impulses/reverb/widehall.wav' 
+			impulse : 'impulses/reverb/generic.wav' 
+		},
 
 		// filter: [
 		// 	{type : 'lowpass', frequency : 100, q : 5 },
