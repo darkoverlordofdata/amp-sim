@@ -103,14 +103,24 @@ document.getElementById('power').addEventListener('click', (e) => {
 		document.getElementById('chorus').enable = 1
 		document.getElementById('phaser').enable = 1
 		document.getElementById('compressor').enable = 1
-
-		var el = document.getElementById('cabinet')
-		document.getElementById('title').innerText = el.options[el.selectedIndex].innerText
+		var cab = document.getElementById('cabinet')
+		document.getElementById('title').innerText = cab.options[cab.selectedIndex].innerText
 		document.getElementById('cabinet').style.visibility = "hidden"
-
 		document.getElementById('visualStyle').value = 1
 	} else {
-	 	guitar.stop()
+		guitar.stop()
+		visualSetting = "off"
+		visualize()
+		document.getElementById('visualStyle').enable = 0
+		document.getElementById('volume').enable = 0
+		document.getElementById('reverb').enable = 0
+		document.getElementById('gain').enable = 0
+		document.getElementById('chorus').enable = 0
+		document.getElementById('phaser').enable = 0
+		document.getElementById('compressor').enable = 0
+		document.getElementById('title').innerText = "DARK.OVERLORD.OF.DATA"
+		document.getElementById('cabinet').style.visibility = "visible"
+		document.getElementById('visualStyle').value = 0
 	}
 })
 
@@ -147,7 +157,7 @@ document.getElementById('gain').addEventListener('change', (e) => {
  * Events: Chorus Control
  */
 document.getElementById('chorus').addEventListener('change', (e) => {
-	if (e.target.value > 0) 
+	if (e.target.value > 0.01) 
 		guitar.tuna.Chorus.bypass = false
 	else
 		guitar.tuna.Chorus.bypass = true
@@ -160,7 +170,7 @@ document.getElementById('chorus').addEventListener('change', (e) => {
  * Events: Phaser Control
  */
 document.getElementById('phaser').addEventListener('change', (e) => {
-	if (e.target.value > 0) 
+	if (e.target.value > 0.01) 
 		guitar.tuna.Phaser.bypass = false
 	else
 		guitar.tuna.Phaser.bypass = true
