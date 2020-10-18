@@ -12,30 +12,10 @@
 </head>
 <body>
     <div class="wrapper">
-        <h1>OVERLOAD</h1>
-        <table>
-            <tr>
-                <td>&nbsp;</td>
-                <td>
-                    <webaudio-switch id="visualStyle" width="48" height="48" src="images/knobs/redbutton128.png"></webaudio-switch>
-                </td>
-                <td>&nbsp;</td>
-                <td>
-                    <canvas class="visualizer" width="700" height="50" style="width:100%; height:50px;"></canvas>
-                </td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                <td>
-                    <label class="controls">Power</label>
-                    <webaudio-switch id="power" width="64" height="64" src="images/knobs/switch_toggle.png"></webaudio-switch>
-                </td>
-                <td>&nbsp;</td>
-            </tr>
-        </table>
-
+        <h1 id="title">OVERLOAD</h1>
         <form class="controls">
-
             <div>
-                <label for="cabinet">Cabinet</label>
+                <!-- <label for="cabinet">Cabinet</label> -->
                 <select id="cabinet" name="cabinet">
                     <option value="impulses/cabinet/generic.wav">generic</option>
                     <option value="impulses/cabinet/Ampeg Classic B5 Left A 230 200 320.wav">Ampeg Classic</option>
@@ -46,6 +26,26 @@
                 </select>
             </div>
 
+            <table>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>
+                        <webaudio-switch id="visualStyle" enable=0 width="48" height="48" src="images/knobs/redbutton128.png"></webaudio-switch>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>
+                        <canvas class="visualizer" width="700" height="50" style="width:100%; height:50px;"></canvas>
+                    </td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                    <td>
+                        <label class="controls">Power</label>
+                        <webaudio-switch id="power" width="64" height="64" src="images/knobs/switch_toggle.png"></webaudio-switch>
+                    </td>
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+
+
             <div>
                 <table>
                     <td>&nbsp;</td>
@@ -55,10 +55,10 @@
                         <td>
                         </td>
                         <td>
-                            <webaudio-slider id="volume" direction="vert"
+                            <webaudio-slider id="volume" enable=0 direction="vert"
                                 width="60" height="200" 
-                                min="0" max="100"
-                                value="50"
+                                min="0.0" max="1.0"
+                                value="0.5"
                                 src="images/img/vsliderbody.png"
                                 knobsrc="images/img/vsliderknob.png">
                             </webaudio-slider>
@@ -66,9 +66,9 @@
 
                         <!-- Amplifier: Reverb -->
                         <td>
-                            <webaudio-slider id="reverb" direction="vert"
+                            <webaudio-slider id="reverb" enable=0 direction="vert"
                                 width="60" height="200" 
-                                min="0" max="100"
+                                min="0.0" max="1.0" step=".01"
                                 value="0"
                                 src="images/img/vsliderbody.png"
                                 knobsrc="images/img/vsliderknob.png">
@@ -77,53 +77,53 @@
                         <td></td>
 
                         <!-- Guitar: Gain -->
-                        <!-- <td>
-                            <webaudio-slider id="gain" direction="vert"
+                        <td>
+                            <webaudio-slider id="gain" enable=0 direction="vert"
                                 width="60" height="200" 
-                                min="0" max="100"
-                                value="50"
+                                min="0" max="50"
+                                value="10"
                                 src="images/img/vsliderbody.png"
                                 knobsrc="images/img/vsliderknob.png">
                             </webaudio-slider>
                         </td>
-                        <td></td> -->
+                        <td></td>
 
                         <!-- Guitar: Chorus -->
-                        <!-- <td>
-                            <webaudio-slider id="chorus" direction="vert"
+                        <td>
+                            <webaudio-slider id="chorus" enable=0 direction="vert"
                                 width="60" height="200" 
-                                min="0" max="100"
-                                value="50"
+                                min=".01" max="3.0" step=".01"
+                                value="1.5"
                                 src="images/img/vsliderbody.png"
                                 knobsrc="images/img/vsliderknob.png">
                             </webaudio-slider>
                         </td>
-                        <td></td> -->
+                        <td></td>
 
                         <!-- Guitar: Phaser -->
-                        <!-- <td>
-                            <webaudio-slider id="phaser" direction="vert"
+                        <td>
+                            <webaudio-slider id="phaser" enable=0 direction="vert"
                                 width="60" height="200" 
-                                min="0" max="100"
-                                value="50"
+                                min=".01" max="1.0" step=".01"
+                                value="0.1"
                                 src="images/img/vsliderbody.png"
                                 knobsrc="images/img/vsliderknob.png">
                             </webaudio-slider>
                         </td>
-                        <td></td> -->
+                        <td></td>
 
                         <!-- Guitar: Compressor -->
-                        <!-- <td>
-                            <webaudio-slider id="compressor" direction="vert"
+                        <td>
+                            <webaudio-slider id="compressor" enable=0 direction="vert"
                                 width="60" height="200" 
-                                min="0" max="100"
+                                min="0" max="100" step=".01"
                                 value="50"
                                 src="images/img/vsliderbody.png"
                                 knobsrc="images/img/vsliderknob.png">
                             </webaudio-slider>
                         </td>
                         <td></td>
- -->
+
 
                         <!-- Guitar: Bass Filter -->
                         <!-- Guitar: Mid Filter -->
@@ -142,14 +142,14 @@
                         <th style="font-size: 2rem"><label>Volume</label></th>
                         <th style="font-size: 2rem"><label>Reverb</label></th>
                         <th>&nbsp;</th>
-                        <!-- <th style="font-size: 2rem"><label>Gain</label></th>
+                        <th style="font-size: 2rem"><label>Gain</label></th>
                         <th>&nbsp;</th>
                         <th style="font-size: 2rem"><label>Chorus</label></th>
                         <th>&nbsp;</th>
                         <th style="font-size: 2rem"><label>Phaser</label></th>
                         <th>&nbsp;</th>
                         <th style="font-size: 2rem"><label>Compressor</label></th>
-                        <th>&nbsp;</th> -->
+                        <th>&nbsp;</th>
                     </tr>
                 </table>
             </div>

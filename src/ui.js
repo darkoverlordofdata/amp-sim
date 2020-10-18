@@ -84,13 +84,8 @@ var chorus_bypass = 0
 var gain_gain = 10
 var gain_bypass = 0
 
-var reverb_highCut = 22050                         //20 to 22050
-var reverb_lowCut = 20                             //20 to 22050
-var reverb_dryLevel = 1                            //0 to 1+
-var reverb_wetLevel = 1                            //0 to 1+
-var reverb_level = 1                               //0 to 1+, adjusts total output of both wet and dry
+var reverb_wet = 0                            //0 to 1+
 var reverb_impulse = "impulses/reverb/generic.wav"    //the path to your impulse response
-var reverb_bypass = 1
 
 
 /**
@@ -101,26 +96,79 @@ document.getElementById('power').addEventListener('click', (e) => {
 		guitarInit()
 		guitar.play()
 		visualize()
+		document.getElementById('visualStyle').enable = 1
+		document.getElementById('volume').enable = 1
+		document.getElementById('reverb').enable = 1
+		document.getElementById('gain').enable = 1
+		document.getElementById('chorus').enable = 1
+		document.getElementById('phaser').enable = 1
+		document.getElementById('compressor').enable = 1
+
+		var el = document.getElementById('cabinet')
+		document.getElementById('title').innerText = el.options[el.selectedIndex].innerText
+		document.getElementById('cabinet').style.visibility = "hidden"
+
 		document.getElementById('visualStyle').value = 1
 	} else {
 	 	guitar.stop()
 	}
 })
 
-/**
- * Events: Reverb Control
- */
-document.getElementById('reverb').addEventListener('change', (e) => {
-	guitar.setReverb(e.target.value/100) 
-})
 
 
 /**
  * Events: Volume Control
  */
 document.getElementById('volume').addEventListener('change', (e) => {
-	amplifier.setVolume(e.target.value/100) 
+	amplifier.setVolume(e.target.value) 
 })
+
+/**
+ * Events: Reverb Control
+ */
+document.getElementById('reverb').addEventListener('change', (e) => {
+	guitar.setReverb(e.target.value) 
+})
+
+/**
+ * Events: Gain Control
+ */
+document.getElementById('gain').addEventListener('change', (e) => {
+	if (e.target.value > 0) 
+		guitar.tuna.Gain.bypass = false
+	else
+		guitar.tuna.Gain.bypass = true
+
+	// console.log("Gain:", e.target.value)
+	guitar.tuna.Gain.gain = e.target.value
+})
+
+/**
+ * Events: Chorus Control
+ */
+document.getElementById('chorus').addEventListener('change', (e) => {
+	if (e.target.value > 0) 
+		guitar.tuna.Chorus.bypass = false
+	else
+		guitar.tuna.Chorus.bypass = true
+
+	// console.log("Chorus rate:", e.target.value)
+	guitar.tuna.Chorus.rate = e.target.value
+})
+
+/**
+ * Events: Phaser Control
+ */
+document.getElementById('phaser').addEventListener('change', (e) => {
+	if (e.target.value > 0) 
+		guitar.tuna.Phaser.bypass = false
+	else
+		guitar.tuna.Phaser.bypass = true
+
+	// console.log("Phaser rate:", e.target.value)
+	guitar.tuna.Phaser.rate = e.target.value
+})
+
 
 
 /**
@@ -150,9 +198,8 @@ function guitarInit()
 	guitar = new Wad({
 		source  : 'mic',
 		reverb: {
-			wet : 0.0,
-			// impulse : 'impulses/reverb/widehall.wav' 
-			impulse : 'impulses/reverb/generic.wav' 
+			wet: 				reverb_wet,
+			impulse: 			reverb_impulse 
 		},
 
 		// filter: [
@@ -207,19 +254,9 @@ function guitarInit()
 			},
 			Cabinet: {
 				makeupGain: 	cabinet_makeup_gain,
-				// impulsePath: 	cabinet_impulse_path,
 				impulsePath: 	cabinetSelect.value,
 				bypass: 		cabinet_bypass				
 			},
-			// Convolver: {								// Reverb:
-			// 	highCut: 		reverb_highCut,                         
-			// 	lowCut: 		reverb_lowCut,                             
-			// 	dryLevel: 		reverb_dryLevel,                            
-			// 	wetLevel: 		reverb_wetLevel,                            
-			// 	level: 			reverb_level,                               
-			// 	impulse: 		reverb_impulse,    
-			// 	bypass: 		1, //reverb_bypass
-			// },
 			Compressor: {
 				threshold: 		compressor_threshold,
 				makeupGain: 	compressor_makeup_gain,
