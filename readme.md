@@ -4,14 +4,27 @@ Amplifier Simulator with wad.js and webaudio-controls.js.
 
 ## Plug in
 
-You'll need to plug your guitar/bass into the microphone input, either using usb or line input jack. 
+You'll need to plug your guitar/bass as the microphone input, either using usb or line input jack. 
 
-If you are using usb, you're on your own. I'm using line input, and on a laptop, the line input is often combined with your headphones for use as a headset. I plug a trrs splitter adapter into the headset jack. Then I plug my headphones into the headphone adapter, and connect the microphone adapter to my guitar using a 1/4" trs to 1/8" ts adapter. If you're using a desktop with a sound card, you may not need the splitter, you should be able to connect your guitar directly to line input. 
+I have found different results when using both different hardware and sofware. Windows and Chromebook both give excellent results using USB.
 
-On linux, I like to set my micrphone input level to 36% to avoid clipping, and I set my headphone volume to about 66%. On windows you can use control panel to fine tune, but I find that the standard settings are fine.
+### Chromebook - Lenovo Duet
+Works great either usb type-a guitar cord in my dock, or analog* cable via the included usbc heahphone jack.
+Allows simultanious use of you tube, etc. 
+
+### Windows 10 - ASUS Zenbook
+usb type-a works great. Analog* cable is mediocre due to no amplification. 
+I could not get simultanious use of you tube, etc. 
+
+### Linux ??? - ASUS Zenbook, Dell Inspiron
+unable to get browser to use the usb input, just the Analog* cable, which is mediocre due to no amplification.
+
+* = 1/4" trs to 1/8" ts 
+the analog cable is noisy in all cases - I need a performance qualtity version, not home audio quality.
+
 
 ## Run the app
-[Run in the browser](https://darkoverlordofdata.com/amp-sim/) or install the electron desktop application.
+[Run in the browser](https://darkoverlordofdata.com/amp-sim/). Installs as a chrome app, or install the electron desktop application.
 
 ### install
 * you may need to install nodejs. On windows, go to https://nodejs.org/en/download/. On linux, check for nodejs and npm in your package manager.
@@ -49,3 +62,12 @@ Internally, it is using:
 * Gain (enabled)
 
 
+
+## implements
+
+    volume
+    reverb
+    gain
+    chorus
+    phaser
+    compressor

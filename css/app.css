@@ -37,6 +37,11 @@ h1 {
 	height: 100%;
 	max-width: 800px;
 	margin: 0 auto;
+
+    background-color: rgba(0,0,0,0.1);
+  /* height: calc(100% - 225px); */
+  height: calc(100% -25px);
+
 }
 
 /* || main UI sections */
@@ -55,8 +60,9 @@ canvas {
 }
 
 .controls {
-  background-color: rgba(0,0,0,0.1);
-  height: calc(100% - 225px);
+  /* background-color: rgba(0,0,0,0.1); */
+  /* height: calc(100% - 225px); */
+  height: calc(100% -25px);
 }
 
 /* || select element styling */
